@@ -1,0 +1,39 @@
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
+    
+
+
+#Creating New Book
+new_book = Book(title="1984", author="George Orwell",publication_year= 1949)
+new_book.save()
+#Output: """
+# Successfully added: 1984,George Orwell,1949 to Books Table
+# """
+
+# Retrieving all books
+Show_books = Book.objects.all()
+#Output: """
+# title |    author     | publication_year
+#  1984   George Orwell      1949
+# """
+
+
+#Updating book title from 1984 to Nineteen Eighty-Four
+update= Book.objects.filter(title= 1984).update(title='Nineteen Eighty-Four')
+#Output: """
+#        title         |    author     | publication_year
+#  Nineteen Eighty-Four   George Orwell      1949
+# """
+
+
+
+#Deleting Book Named Nineteen Eighty-Four
+delete= Book.objects.filter(title= 'Nineteen Eighty-Four').delete()
+#Output: """
+# title |    author     | publication_year
+#  NULL       NULL            NULL
+# """
