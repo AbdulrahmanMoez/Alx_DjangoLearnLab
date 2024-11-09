@@ -13,7 +13,7 @@ Successfully added: 1984, George Orwell, 1949 to Books Table
 
 ## Retrieving all books
 
-Show_books = Book.objects.all()
+Show_books = Book.objects.get()
 
 """ #Output:
 title |    author     | publication_year
@@ -22,7 +22,10 @@ title |    author     | publication_year
 
 ## Updating book title from 1984 to Nineteen Eighty-Four
 
-update= Book.objects.filter(title= 1984).update(title='Nineteen Eighty-Four')
+update_title = Book.objects.get(title= "1984")
+update_title.title = "Nineteen Eighty-Four"
+update_title.save()
+
 """ #Output:
        title         |    author     | publication_year
  Nineteen Eighty-Four   George Orwell      1949
@@ -30,7 +33,10 @@ update= Book.objects.filter(title= 1984).update(title='Nineteen Eighty-Four')
 
 ## Deleting Book Named Nineteen Eighty-Four
 
-delete= Book.objects.filter(title= 'Nineteen Eighty-Four').delete()
+from bookshelf.models import Book
+del_book= Book.objects.get(title= 'Nineteen Eighty-Four')
+del_book.delete()
+
 """ #Output:
 title |    author     | publication_year
 NULL       NULL            NULL

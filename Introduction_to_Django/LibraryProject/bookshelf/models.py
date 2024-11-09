@@ -20,6 +20,7 @@ book = Book.objects.create(
 
 # Retrieving all books
 Show_books = Book.objects.get()
+
 #Output: """
 # title |    author     | publication_year
 #  1984   George Orwell      1949
@@ -27,10 +28,9 @@ Show_books = Book.objects.get()
 
 
 #Updating book title from 1984 to Nineteen Eighty-Four
-update_title = Book.objects.get(title= 1984)
-book.title(title='Nineteen Eighty-Four')
-book.save()
-
+update_title = Book.objects.get(title= "1984")
+update_title.title = "Nineteen Eighty-Four"
+update_title.save()
 
 #Output: """
 #        title         |    author     | publication_year
@@ -40,7 +40,12 @@ book.save()
 
 
 #Deleting Book Named Nineteen Eighty-Four
-delete= Book.objects.filter(title= 'Nineteen Eighty-Four').delete()
+del_book= Book.objects.get(title= 'Nineteen Eighty-Four')
+del_book.delete()
+
+# Output:
+# Successfully deleted 'Nineteen Eighty-Four' from Books Table
+# """
 #Output: """
 # title |    author     | publication_year
 #  NULL       NULL            NULL
