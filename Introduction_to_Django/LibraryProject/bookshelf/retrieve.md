@@ -1,6 +1,6 @@
 # Retrieving all books
 
-Show_books = Book.objects.get()
+book = Book.objects.get()
 
 """ #Output:
 title |    author     | publication_year
