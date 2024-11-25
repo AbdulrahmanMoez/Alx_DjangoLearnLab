@@ -6,8 +6,8 @@ author = Author.objects.get(name = 'author_name')
 library_books = Library.books.all()
 
 
-Library.objects.get(name="library_name")
-Librarian.objects.get(name="Librarian_name")
+library = Library.objects.get(name="Central Library")    
+librarian = library.librarian
 
 # Query all books by a specific author.
 # List all books in a library.
