@@ -1,8 +1,9 @@
+from django.views.generic import DetailView
 from django.shortcuts import render
 from .models import Library
 from .models import Book
 from .models import Author
-from django.views.generic import DetailView
+
 
 def book_list(request):
     
