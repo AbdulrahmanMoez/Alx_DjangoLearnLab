@@ -5,7 +5,7 @@ from .models import Book
 from .models import Author
 
 
-def book_list(request):
+def list_books(request):
     
     books = Book.objects.all()
     authors = Author.objects.all()
