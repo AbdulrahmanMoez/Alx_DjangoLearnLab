@@ -46,24 +46,24 @@ class LogoutView(LogoutView):
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 
-def admin(user):
+def Admin(user):
     return user.userprofile.role == 'Admin'
 
-def librarian(user):
+def Librarian(user):
     return user.userprofile.role == 'Librarian'
 
-def member(user):
+def Member(user):
     return user.userprofile.role == 'Member'
 
-@user_passes_test(admin)
+@user_passes_test(Admin)
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
-@user_passes_test(librarian)
+@user_passes_test(Librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
-@user_passes_test(member)
+@user_passes_test(Member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
 
