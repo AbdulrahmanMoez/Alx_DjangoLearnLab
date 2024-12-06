@@ -47,8 +47,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 
 def admin(user):
-    if user.userprofile.role == 'Admin':
-        return 'Admin'
+    return user.userprofile.role == 'Admin'
 
 def librarian(user):
     return user.userprofile.role == 'Librarian'
@@ -67,5 +66,6 @@ def librarian_view(request):
 @user_passes_test(member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
 
 
