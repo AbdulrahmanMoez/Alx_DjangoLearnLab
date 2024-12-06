@@ -45,7 +45,7 @@ class LogoutView(LogoutView):
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
-
+from django.contrib.auth.models import User
 def user_is_admin(user):
     """
     Check if the user has an Admin role
