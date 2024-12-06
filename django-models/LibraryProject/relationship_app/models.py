@@ -23,13 +23,11 @@ class Library(models.Model):
     def __str__(self):
         return self.name
 
-    # class Meta:
-    #     permissions = [
-    #         ("can_add_books", "Can add books"),
-    #         ("can_remove_books", "Can remove books"),
-    #         ("can_change_book", "Can change book")
-    #         ("can_delete_book", "Can delete book")
-    #     ]
+    class Meta:
+        permissions = [
+            ("can_add_books", "Can add books"),
+            ("can_remove_books", "Can remove books"),
+        ]
 
 class Librarian(models.Model):
     name = models.CharField(max_length=50)
@@ -37,7 +35,6 @@ class Librarian(models.Model):
     
     def __str__(self):
         return self.name
-
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [
@@ -59,4 +56,3 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
-
