@@ -30,6 +30,10 @@ class LibraryDetailView(DetailView):
         return context
     
     
+class register(CreateView):
+    form_class = UserCreationForm()
+    template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('login')
 class LoginView(LoginView):
     template_name = 'relationship_app/login.html'
     redirect_authenticated_user = True
@@ -38,7 +42,3 @@ class LogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
     next_page = reverse_lazy('login')
 
-class register(CreateView):
-    form_class = UserCreationForm
-    template_name = 'relationship_app/register.html'
-    success_url = reverse_lazy('login')
