@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
 @login_required
 def list_books(request):
     
@@ -31,7 +31,7 @@ class LibraryDetailView(DetailView):
     
     
 class register(CreateView):
-    form_class = UserCreationForm()
+    form_class = UserCreationForm
     template_name = 'relationship_app/register.html'
     success_url = reverse_lazy('login')
 class LoginView(LoginView):
@@ -44,27 +44,55 @@ class LogoutView(LogoutView):
 
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import TemplateView
+from django.http import HttpResponseForbidden
 
-def user_is_admin(user):
-    return user.userprofile.role == 'Admin'
+def is_admin(user):
+    """
+    Check if the user has an Admin role
+    """
+    return hasattr(user, 'profile') and user.profile.role == 'Admin'
 
-def user_is_librarian(user):
-    return user.userprofile.role == 'Librarian'
+def is_librarian(user):
+    """
+    Check if the user has a Librarian role
+    """
+    return hasattr(user, 'profile') and user.profile.role == 'Librarian'
 
-def user_is_member(user):
-    return user.userprofile.role == 'Member'
+def is_member(user):
+    """
+    Check if the user has a Member role
+    """
+    return hasattr(user, 'profile') and user.profile.role == 'Member'
 
-@user_passes_test(user_is_admin)
+@user_passes_test(is_admin, login_url='login')
 def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
+    """
+    View accessible only to Admin users
+    """
+    context = {
+        'admin_message': 'Welcome to the Admin Dashboard',
+        'total_users': User.objects.count()
+    }
+    return render(request, 'relationship_app/admin_view.html', context)
 
-@user_passes_test(user_is_librarian)
+@user_passes_test(is_librarian, login_url='login')
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
+    """
+    View accessible only to Librarian users
+    """
+    context = {
+        'librarian_message': 'Librarian Management Panel',
+        'recent_books': Book.objects.all()[:5]
+    }
+    return render(request, 'relationship_app/librarian_view.html', context)
 
-@user_passes_test(user_is_member)
+@user_passes_test(is_member, login_url='login')
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
-
+    """
+    View accessible only to Member users
+    """
+    context = {
+        'member_message': 'Your Personal Library Dashboard',
+        'borrowed_books': Book.objects.filter(borrower=request.user)
+    }
+    return render(request, 'relationship_app/member_view.html', context)
