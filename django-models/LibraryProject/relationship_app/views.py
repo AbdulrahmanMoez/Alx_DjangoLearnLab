@@ -5,8 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def list_books(request):
     
     books = Book.objects.all()
@@ -43,6 +44,7 @@ class LogoutView(LogoutView):
 
 
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
 
 def user_is_admin(user):
@@ -55,15 +57,20 @@ def user_is_member(user):
     return user.userprofile.role == 'Member'
 
 @user_passes_test(user_is_admin)
+@permission_required('relationship_app.can_add_books', raise_exception=True)
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
 @user_passes_test(user_is_librarian)
+@permission_required('relationship_app.can_change_books', raise_exception=True)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
 @user_passes_test(user_is_member)
+@permission_required('relationship_app.can_delete_books', raise_exception=True)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+
 
 

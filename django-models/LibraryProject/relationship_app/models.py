@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.contrib.auth.decorators import permission_required
 class Author(models.Model):
     name = models.CharField(max_length=50)
     
@@ -26,8 +26,9 @@ class Library(models.Model):
     class Meta:
         permissions = [
             ("can_add_books", "Can add books"),
-            ("can_change_books", "Can change books"),
-            ("can_delete_books", "Can delete books"),
+            ("can_remove_books", "Can remove books"),
+            ("can_change_book", "Can change book")
+            ("can_delete_book", "Can delete book")
         ]
 
 class Librarian(models.Model):
