@@ -27,6 +27,8 @@ class Library(models.Model):
         permissions = [
             ("can_add_books", "Can add books"),
             ("can_remove_books", "Can remove books"),
+            ("can_change_book", "Can change book")
+            ("can_delete_book", "Can delete book")
         ]
 
 class Librarian(models.Model):
