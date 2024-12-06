@@ -47,21 +47,24 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import TemplateView
 
+def user_is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def user_is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def user_is_member(user):
+    return user.userprofile.role == 'Member'
+
+@user_passes_test(user_is_admin)
 def admin_view(request):
-    # Logic for the admin view
-    return render(request, 'admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
 
-@user_passes_test(lambda u: u.userprofile.role == 'admin')
-def admin_restricted_view(request):
-    # Logic for the admin-only view
-    return render(request, 'admin_restricted_view.html')
-
-@user_passes_test(lambda u: u.userprofile.role == 'librarian')
+@user_passes_test(user_is_librarian)
 def librarian_view(request):
-    # Logic for the librarian view
-    return render(request, 'librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
-@user_passes_test(lambda u: u.userprofile.role == 'member')
+@user_passes_test(user_is_member)
 def member_view(request):
-    # Logic for the member view
-    return render(request, 'member_view.html')
+    return render(request, 'relationship_app/member_view.html')
+
