@@ -44,13 +44,27 @@ class LogoutView(LogoutView):
 
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import TemplateView
-from django.contrib.auth.models import User
-def is_admin(user):
+from django.http import HttpResponseForbidden
+
+def user_is_admin(user):
+    """
+    Check if the user has an Admin role
+    """
     return hasattr(user, 'profile') and user.profile.role == 'Admin'
 
-@user_passes_test(is_admin, login_url='login')
+def user_is_librarian(user):
+    """
+    Check if the user has a Librarian role
+    """
+    return hasattr(user, 'profile') and user.profile.role == 'Librarian'
+
+def user_is_member(user):
+    """
+    Check if the user has a Member role
+    """
+    return hasattr(user, 'profile') and user.profile.role == 'Member'
+
+@user_passes_test(user_is_admin)
 def admin_view(request):
     """
     View accessible only to Admin users
@@ -60,4 +74,26 @@ def admin_view(request):
         'total_users': User.objects.count()
     }
     return render(request, 'relationship_app/admin_view.html', context)
+
+@user_passes_test(user_is_librarian)
+def librarian_view(request):
+    """
+    View accessible only to Librarian users
+    """
+    context = {
+        'librarian_message': 'Librarian Management Panel',
+        'recent_books': Book.objects.all()[:5]
+    }
+    return render(request, 'relationship_app/librarian_view.html', context)
+
+@user_passes_test(user_is_member)
+def member_view(request):
+    """
+    View accessible only to Member users
+    """
+    context = {
+        'member_message': 'Your Personal Library Dashboard',
+        'borrowed_books': Book.objects.filter(borrower=request.user)
+    }
+    return render(request, 'relationship_app/member_view.html', context)
 
