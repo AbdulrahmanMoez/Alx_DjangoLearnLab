@@ -23,11 +23,11 @@ class Library(models.Model):
     def __str__(self):
         return self.name
 
-    # class Meta:
-    #     permissions = [
-    #         ("can_add_books", "Can add books"),
-    #         ("can_remove_books", "Can remove books"),
-    #     ]
+    class Meta:
+        permissions = [
+            ("can_add_books", "Can add books"),
+            ("can_remove_books", "Can remove books"),
+        ]
 
 class Librarian(models.Model):
     name = models.CharField(max_length=50)
@@ -36,7 +36,7 @@ class Librarian(models.Model):
     def __str__(self):
         return self.name
 
-class UserProfile(models.Model):
+# class UserProfile(models.Model):
     ROLE_CHOICES = [
         ('Admin', 'Admin'),
         ('Librarian', 'Librarian'),
