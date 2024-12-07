@@ -42,22 +42,29 @@ class UserRegistrationView(CreateView):
     
 
 from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from django.contrib.auth.models import User
 
+def is_admin(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-def admin_check(user):
-    return user.userprofile.role == 'Admin'
-@user_passes_test(admin_check)
+def is_librarian(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+
+@user_passes_test(is_admin, login_url='login')
 def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
+    users = User.objects.all()
+    return render(request, 'admin_view.html', {'users': users})
 
-def librarian_check(user):
-    return user.userprofile.role == 'Librarian'
-@user_passes_test(librarian_check)
+@user_passes_test(is_librarian, login_url='login')
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
+    # Add librarian-specific logic here
+    return render(request, 'librarian_view.html')
 
-def member_check(user):
-    return user.userprofile.role == 'Member'
-@user_passes_test(member_check)
+@user_passes_test(is_member, login_url='login')
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
+    # Add member-specific logic here
+    return render(request, 'member_view.html')
