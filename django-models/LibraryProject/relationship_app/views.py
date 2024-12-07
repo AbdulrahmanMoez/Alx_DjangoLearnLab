@@ -41,30 +41,30 @@ class UserRegistrationView(CreateView):
     
     
 
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, redirect
+from .models import Book
 
-def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+@permission_required('relationship_app.can_add_book', login_url='login')
+def add_book(request):
+    if request.method == 'POST':
+        # Handle book creation logic
+        return redirect('book_list')
+    return render(request, 'relationship_app/add_book.html')
 
-def is_librarian(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+@permission_required('relationship_app.can_change_book', login_url='login')
+def edit_book(request, pk):
+    book = Book.objects.get(pk=pk)
+    if request.method == 'POST':
+        # Handle book update logic
+        return redirect('book_list')
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
 
-def is_member(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
-
-@user_passes_test(is_admin, login_url='login')
-def admin_view(request):
-    users = User.objects.all()
-    return render(request, 'relationship_app/admin_view.html', {'users': users})
-
-@user_passes_test(is_librarian, login_url='login')
-def librarian_view(request):
-    # Add librarian-specific logic here
-    return render(request, 'relationship_app/librarian_view.html')
-
-@user_passes_test(is_member, login_url='login')
-def member_view(request):
-    # Add member-specific logic here
-    return render(request, 'relationship_app/member_view.html')
+@permission_required('relationship_app.can_delete_book', login_url='login')
+def delete_book(request, pk):
+    book = Book.objects.get(pk=pk)
+    if request.method == 'POST':
+        # Handle book deletion logic
+        book.delete()
+        return redirect('book_list')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
