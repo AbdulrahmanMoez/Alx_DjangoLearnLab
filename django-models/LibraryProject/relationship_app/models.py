@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Author(models.Model):
     name = models.CharField(max_length=50)
 
@@ -28,9 +28,7 @@ class Librarian(models.Model):
         return self.name
     
     
-# models.py
-from django.db import models
-from django.contrib.auth.models import User
+
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [
