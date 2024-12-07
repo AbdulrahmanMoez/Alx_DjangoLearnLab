@@ -57,14 +57,14 @@ def is_member(user):
 @user_passes_test(is_admin, login_url='login')
 def admin_view(request):
     users = User.objects.all()
-    return render(request, 'admin_view.html', {'users': users})
+    return render(request, 'relationship_app/admin_view.html', {'users': users})
 
 @user_passes_test(is_librarian, login_url='login')
 def librarian_view(request):
     # Add librarian-specific logic here
-    return render(request, 'librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
 @user_passes_test(is_member, login_url='login')
 def member_view(request):
     # Add member-specific logic here
-    return render(request, 'member_view.html')
+    return render(request, 'relationship_app/member_view.html')
