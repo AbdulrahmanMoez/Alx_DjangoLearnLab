@@ -48,13 +48,13 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
 
 def user_is_admin(user):
-    return user.userprofile.role == "Admin"
+    return user.userprofile.role == 'Admin'
 
 def user_is_librarian(user):
-    return user.userprofile.role == "Librarian"
+    return user.userprofile.role == 'Librarian'
 
 def user_is_member(user):
-    return user.userprofile.role == "Member"
+    return user.userprofile.role == 'Member'
 
 @user_passes_test(user_is_admin)
 @permission_required('relationship_app.can_add_books', raise_exception=True)
