@@ -45,6 +45,8 @@ class CustomLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
     next_page = reverse_lazy('login')
 
+
+
 def user_is_admin(user):
     return user.userprofile.role == 'Admin'
 
