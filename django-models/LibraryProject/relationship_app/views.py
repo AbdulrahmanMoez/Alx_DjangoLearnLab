@@ -1,11 +1,12 @@
-from django.views.generic.detail import DetailView
 from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.views.generic.detail import DetailView
 from .models import Library, Book, Author
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def list_books(request):
@@ -34,7 +35,6 @@ class RegisterView(CreateView):
     
     def form_valid(self, form):
         response = super().form_valid(form)
-        # Optionally add more logic here for post-registration
         return response
 
 class CustomLoginView(LoginView):
@@ -44,8 +44,6 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
     next_page = reverse_lazy('login')
-
-
 
 def user_is_admin(user):
     return user.userprofile.role == 'Admin'
