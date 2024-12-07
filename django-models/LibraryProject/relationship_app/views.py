@@ -1,5 +1,5 @@
 from django.views.generic.detail import DetailView
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Library, Book, Author
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy

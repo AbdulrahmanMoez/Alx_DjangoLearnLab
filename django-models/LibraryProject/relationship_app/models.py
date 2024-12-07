@@ -51,10 +51,3 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
-class Meta:
-    permissions = [
-        ("can_add_books", "Can add books"),
-        ("can_remove_books", "Can remove books"),
-        ("can_change_book", "Can change book"),
-        ("can_delete_book", "Can delete book")
-    ]
